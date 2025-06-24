@@ -1,10 +1,10 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #1a1a1a;
+    background: linear-gradient(120deg, #2d0036 0%, #3a1c71 50%, #9C27B0 100%);
     color: #ffffff;
 }
 
@@ -20,12 +20,14 @@ body {
 }
 
 nav {
-    background-color: rgba(45, 45, 45, 0.2);
+    background: rgba(45, 45, 45, 0.4);
     padding: 1.5rem 1rem;
     margin-bottom: 2rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     display: flex;
     justify-content: center;
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(8px);
 }
 
 nav > div {
@@ -35,13 +37,15 @@ nav > div {
 }
 
 nav a {
-    color: #cccccc;
+    color: #e0e0e0;
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.3s, background 0.3s, box-shadow 0.3s;
     position: relative;
-    padding: 0.5rem 1rem;
+    padding: 0.7rem 1.3rem;
     margin: 0 0.75rem;
+    border-radius: 8px;
 }
 
 nav a:not(:last-child)::after {
@@ -49,28 +53,37 @@ nav a:not(:last-child)::after {
     position: absolute;
     left: 100%;
     margin-left: 0.75rem;
-    color: #777;
+    color: #7b1fa2;
     pointer-events: none;
 }
 
-nav a:hover {
-    color: #9C27B0; /* Purple hover color */
+nav a:hover, nav a.active {
+    color: #fff;
+    background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
+    box-shadow: 0 2px 8px #9C27B0aa;
 }
 
-.form-container {
-    background: #2d2d2d;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    padding: 2rem;
+.form-container, .card-container, .profile-container, .links-container {
+    background: rgba(45, 45, 45, 0.7);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(156, 39, 176, 0.18);
+    padding: 2.5rem 2rem;
+    margin: 2rem auto;
+    max-width: 500px;
     width: 100%;
-    max-width: 400px;
-    margin: auto;
+    transition: box-shadow 0.3s;
+}
+
+.form-container:hover, .card-container:hover, .profile-container:hover, .links-container:hover {
+    box-shadow: 0 12px 40px 0 #9C27B0aa;
 }
 
 .form-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
 }
 
 .form-group {
@@ -79,46 +92,101 @@ nav a:hover {
     gap: 0.5rem;
 }
 
-.form-group input {
-    padding: 0.8rem;
-    border: 1px solid #444;
-    border-radius: 5px;
+.form-group input, .form-group select, .form-group textarea {
+    padding: 0.9rem;
+    border: 1.5px solid #7B1FA2;
+    border-radius: 8px;
     font-size: 1rem;
-    background-color: #3d3d3d;
+    background-color: #2d2d2d;
     color: #ffffff;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #9C27B0;
+    box-shadow: 0 0 0 2px #9C27B044;
 }
 
 .form-group input[type="submit"] {
-    background-color: #9C27B0; /* Purple button */
+    background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
     color: white;
     cursor: pointer;
     border: none;
-    padding: 1rem;
+    padding: 1.1rem;
     margin-top: 1rem;
-    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #9C27B0aa;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .form-group input[type="submit"]:hover {
-    background-color: #7B1FA2; /* Darker purple on hover */
+    background: linear-gradient(90deg, #9C27B0 0%, #7B1FA2 100%);
+    box-shadow: 0 4px 16px #9C27B0cc;
 }
 
 h1 {
     text-align: center;
-    color: #ffffff;
+    color: #fff;
     margin-bottom: 2rem;
+    font-size: 2.2rem;
+    background: linear-gradient(90deg, #9C27B0 0%, #7B1FA2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #9C27B0; /* Purple focus border */
-    box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.2); /* Purple shadow */
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(45, 45, 45, 0.7);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px #9C27B044;
+}
+th, td {
+    padding: 1rem 1.2rem;
+    text-align: left;
+}
+th {
+    background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
+    color: #fff;
+    font-weight: 700;
+    border-bottom: 2px solid #9C27B0;
+}
+td {
+    color: #e0e0e0;
+    border-bottom: 1px solid #444;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+tr:hover td {
+    background: #2d0036cc;
+    transition: background 0.2s;
 }
 
-nav a.active {
-    color: #9C27B0; /* Purple active page */
+/* Button Styling */
+button, .table-action-btn {
+    background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.3rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #9C27B0aa;
+    transition: background 0.3s, box-shadow 0.3s;
 }
-
-/*PROFILE PAGE*/
+button:hover, .table-action-btn:hover {
+    background: linear-gradient(90deg, #9C27B0 0%, #7B1FA2 100%);
+    box-shadow: 0 4px 16px #9C27B0cc;
+}
 
 /* Profile Container */
 .profile-container {
@@ -135,7 +203,6 @@ nav a.active {
     gap: 1.5rem;
 }
 
-/* Profile Picture */
 .profile-pic {
     width: 150px;
     height: 150px;
@@ -143,12 +210,18 @@ nav a.active {
     background: #3d3d3d;
     border: 3px solid #9C27B0;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 .profile-pic img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Profile Info */
@@ -163,16 +236,24 @@ nav a.active {
     margin: 0;
     padding: 0.8rem;
     background: #3d3d3d;
-    border-radius: 5px;
-    border: 1px solid #444;
+    border-radius: 8px;
+    border: 1.5px solid #7B1FA2;
     color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 /* Admin Page Specific Styles */
 .main-container {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 600px;
+    width: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
 }
 
 .card-container {
@@ -180,8 +261,14 @@ nav a.active {
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     padding: 2rem;
-    margin: 1rem auto;
-    max-width: 600px;
+    margin: 1rem 0;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .link-group {
@@ -195,16 +282,20 @@ nav a.active {
     color: #cccccc;
     text-decoration: none;
     padding: 0.8rem 1.5rem;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    background-color: #3d3d3d;
-    border: 1px solid #444;
+    border-radius: 8px;
+    transition: all 0.3s;
+    background: #3d3d3d;
+    border: 1.5px solid #7B1FA2;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px #9C27B044;
 }
 
 .link-group a:hover {
-    background-color: #9C27B0;
-    border-color: #7B1FA2;
+    background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
+    border-color: #9C27B0;
     color: white;
+    box-shadow: 0 4px 16px #9C27B0cc;
 }
 
 /* Student Page Styles */
@@ -213,6 +304,7 @@ nav a.active {
     color: #ffffff;
     margin: 2rem 0;
     font-size: 2rem;
+    font-weight: 600;
 }
 
 .links-container {
@@ -239,4 +331,13 @@ nav a.active {
 .links-container a:hover {
     color: #9C27B0;
     transform: scale(1.05);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background: #2d2d2d;
+}
+::-webkit-scrollbar-thumb {
+    background: #7B1FA2;
+    border-radius: 8px;
 }
