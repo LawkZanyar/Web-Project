@@ -47,27 +47,13 @@
                 editFields.id = 'edit-fields';
                 editFields.innerHTML = `
                     <div class="form-group">
-                        <label>Name:</label>
-                        <input type="text" id="edit-name" value="${user.name}">
-                    </div>
-                    <div class="form-group">
-                        <label>Email:</label>
-                        <input type="email" id="edit-email" value="${user.email}">
-                    </div>
-                    <div class="form-group">
-                        <label>Role:</label>
-                        <input type="text" id="edit-role" value="${user.role}">
-                    </div>
-                    <div class="form-group">
-                        <button type="button" id="save-btn">Save Changes</button>
+                        <label>User found:</label>
+                        <a href="edit-user-details.html?username=${encodeURIComponent(user.username)}" style="color:#4f46e5;text-decoration:underline;cursor:pointer;">
+                            ${user.username} (${user.email})
+                        </a>
                     </div>
                 `;
                 form.appendChild(editFields);
-
-                document.getElementById('save-btn').onclick = function() {
-                    alert('Changes saved for ' + user.username + '!');
-                    // Here you would send the updated data to your backend
-                };
             } else {
                 alert('User not found!');
             }
