@@ -6,7 +6,7 @@
 </head>
 <body>
     <nav>
-        <a href="index.html">Login</a>
+        <a href="index.html">Home</a>
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
         <a href="student.html">Student</a>
@@ -45,13 +45,21 @@
                     <label>Role:</label>
                     <input type="text" id="edit-role" value="${user.role}">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="display:flex;gap:16px;">
                     <button type="button" id="save-btn">Save Changes</button>
+                    <button type="button" id="delete-btn" style="background:#dc2626;color:#fff;">Delete User</button>
                 </div>
             `;
             document.getElementById('save-btn').onclick = function() {
                 alert('Changes saved for ' + user.username + '!');
                 // Here you would send the updated data to your backend
+            };
+            document.getElementById('delete-btn').onclick = function() {
+                if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                    alert('User "' + user.username + '" has been deleted.');
+                    // Here you would send a delete request to your backend
+                    window.location.href = 'admin.html';
+                }
             };
         } else {
             form.innerHTML = `<div class="form-group"><span style="color:red;">User not found.</span></div>`;
