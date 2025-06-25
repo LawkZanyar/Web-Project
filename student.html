@@ -3,6 +3,133 @@
 <head>
     <title>Student</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #181622;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        nav {
+            background: rgba(30, 28, 40, 0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            padding: 14px 32px;
+            border-radius: 0 0 14px 14px;
+            margin-bottom: 36px;
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 7px 16px;
+            border-radius: 7px;
+            transition: background 0.2s, color 0.2s;
+        }
+        nav a:hover, nav a.active {
+            background: #2d2346;
+            color: #c084fc;
+        }
+        .welcome-banner {
+            background: linear-gradient(90deg, #2d2346 0%, #3a2e5a 100%);
+            color: #c084fc;
+            padding: 16px 22px;
+            border-radius: 10px;
+            margin: 40px auto 30px auto;
+            font-size: 1.13em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            max-width: 500px;
+            justify-content: center;
+        }
+        .dashboard-title {
+            margin-bottom: 28px;
+            color: #c084fc;
+            font-size: 2em;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .card-container {
+            display: flex;
+            flex-direction: row;
+            gap: 28px;
+            justify-content: center;
+            align-items: stretch;
+            margin: 32px auto 48px auto;
+            max-width: 600px;
+        }
+        .dashboard-card {
+            background: rgba(40, 38, 56, 0.45);
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            padding: 22px 16px 18px 16px;
+            min-width: 140px;
+            max-width: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1.5px solid rgba(192,132,252,0.18);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: box-shadow 0.18s, transform 0.18s, background 0.18s, border 0.18s;
+            position: relative;
+        }
+        .dashboard-card:hover {
+            box-shadow: 0 8px 32px rgba(192,132,252,0.18);
+            transform: translateY(-4px) scale(1.03);
+            background: rgba(60, 44, 90, 0.97);
+            border: 1.5px solid #c084fc;
+        }
+        .dashboard-card a {
+            text-decoration: none;
+            color: #a5b4fc;
+            font-size: 1.13em;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.18s;
+        }
+        .dashboard-card:hover a {
+            color: #fff;
+        }
+        .dashboard-icon {
+            font-size: 2em;
+            margin-bottom: 6px;
+            color: #c084fc;
+            filter: drop-shadow(0 2px 6px #0002);
+            transition: color 0.18s;
+        }
+        .dashboard-card:hover .dashboard-icon {
+            color: #fff;
+        }
+        .dashboard-label {
+            font-size: 1.08em;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        @media (max-width: 700px) {
+            .welcome-banner {
+                padding: 12px 8vw;
+                font-size: 1em;
+            }
+            .card-container {
+                flex-direction: column;
+                gap: 18px;
+                align-items: center;
+            }
+            .dashboard-card {
+                min-width: 120px;
+                max-width: 90vw;
+                padding: 18px 6px 14px 6px;
+            }
+        }
+    </style>
     <script>
         if (localStorage.getItem('loggedIn') !== 'true') {
             window.location.href = 'index.html';
@@ -14,20 +141,34 @@
         <a href="index.html">Home</a>
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
-        <a href="student.html">Student</a>
+        <a href="student.html" class="active">Student</a>
         <a href="manager.html">Manager</a>
     </nav>
-    
-    <div class="main-container" style="max-width:600px;margin:40px auto;padding:24px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-        <h1 style="margin-bottom:16px;">Student Dashboard</h1>
-        <div class="card-container" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
-            <div class="dashboard-card" style="flex:1 1 180px;min-width:180px;max-width:220px;background:#f5f7fa;padding:20px;border-radius:8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-                <a href="new-form.html" style="text-decoration:none;color:#007bff;font-size:1.1em;font-weight:500;">📝 New Application</a>
-            </div>
-            <div class="dashboard-card" style="flex:1 1 180px;min-width:180px;max-width:220px;background:#f5f7fa;padding:20px;border-radius:8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
-                <a href="sent-applications.html" style="text-decoration:none;color:#007bff;font-size:1.1em;font-weight:500;">📄 Sent Applications</a>
-            </div>
+    <div class="welcome-banner" id="welcome-text">
+        <span>👋</span>
+        <span>Welcome to your student dashboard!</span>
+    </div>
+    <h1 class="dashboard-title">Student Dashboard</h1>
+    <div class="card-container">
+        <div class="dashboard-card">
+            <a href="new-form.html">
+                <span class="dashboard-icon">📝</span>
+                <span class="dashboard-label">New Application</span>
+            </a>
+        </div>
+        <div class="dashboard-card">
+            <a href="sent-applications.html">
+                <span class="dashboard-icon">📄</span>
+                <span class="dashboard-label">Sent Applications</span>
+            </a>
         </div>
     </div>
+    <script>
+        // Personalized welcome if username is available
+        const username = localStorage.getItem('profileName') || localStorage.getItem('username');
+        if (username) {
+            document.getElementById('welcome-text').children[1].textContent = `Welcome, ${username}!`;
+        }
+    </script>
 </body>
 </html>
