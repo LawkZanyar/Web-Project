@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="profile.html">Profile</a>
+        <a href="admin.html">Admin</a>
+        <a href="student.html">Student</a>
+        <a href="manager.html">Manager</a>
+    </nav>
+    
+    <h1>Edit Profile</h1>
+
+    <div class="profile-container">
+        <div class="profile-info">
+            <p class="profile-detail">Name: <span id="edit-name" contenteditable="true" style="outline:none;"></span></p>
+            <p class="profile-detail">Email: <span id="edit-email" contenteditable="true" style="outline:none;"></span></p>
+            <p class="profile-detail">Role: <span id="edit-role" contenteditable="true" style="outline:none;"></span></p>
+            <button id="save-btn" style="margin-top:10px; display:none;">Save</button>
+            <button id="cancel-btn" style="margin-top:10px;">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Load current values
+        const nameSpan = document.getElementById('edit-name');
+        const emailSpan = document.getElementById('edit-email');
+        const roleSpan = document.getElementById('edit-role');
+        nameSpan.textContent = localStorage.getItem('profileName') || 'John Doe';
+        emailSpan.textContent = localStorage.getItem('profileEmail') || 'john.doe@example.com';
+        roleSpan.textContent = localStorage.getItem('profileRole') || 'Student';
+
+        const saveBtn = document.getElementById('save-btn');
+        let changed = false;
+
+        // Show save button only when something changes
+        [nameSpan, emailSpan, roleSpan].forEach(span => {
+            span.addEventListener('input', () => {
+                saveBtn.style.display = 'inline-block';
+                changed = true;
+            });
+            // Optional: Save on Enter
+            span.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveBtn.click();
+                }
+            });
+        });
+
+        // Save and redirect
+        saveBtn.addEventListener('click', function() {
+            if (changed) {
+                localStorage.setItem('profileName', nameSpan.textContent);
+                localStorage.setItem('profileEmail', emailSpan.textContent);
+                localStorage.setItem('profileRole', roleSpan.textContent);
+            }
+            window.location.href = 'profile.html';
+        });
+
+        // Cancel button
+        document.getElementById('cancel-btn').onclick = function() {
+            window.location.href = 'profile.html';
+        };
+    </script>
+</body>
+</html>
