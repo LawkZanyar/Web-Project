@@ -3,10 +3,15 @@
 <head>
     <title>Admin</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
 </head>
 <body>
     <nav>
-        <a href="index.html">Login</a>
+        <a href="index.html">Home</a>
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
         <a href="student.html">Student</a>

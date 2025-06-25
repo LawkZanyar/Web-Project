@@ -5,15 +5,15 @@
     <link rel="stylesheet" href="style_sheet.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="active">Login</a>
+    <nav id="main-nav" style="display:none;">
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
         <a href="student.html">Student</a>
         <a href="manager.html">Manager</a>
+        <a href="#" id="logout-link" style="float:right;">Logout</a>
     </nav>
     
-    <div class="form-container">
+    <div class="form-container" id="login-container">
         <h1>Login Page</h1>
         <form class="form-wrapper" method="post">
             <div class="form-group">
@@ -28,6 +28,67 @@
                 <input type="submit" value="Login">
             </div>
         </form>
+        <div id="message" style="display:none; margin-top:10px; padding:8px; border-radius:4px;"></div>
     </div>
+    <script>
+        const messageDiv = document.getElementById('message');
+        const nav = document.getElementById('main-nav');
+        const loginContainer = document.getElementById('login-container');
+        const logoutLink = document.getElementById('logout-link');
+
+        // Check login status on page load
+        if (localStorage.getItem('loggedIn') === 'true') {
+            nav.style.display = 'block';
+            loginContainer.style.display = 'none';
+        }
+
+        function showMessage(text, isSuccess) {
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+            messageDiv.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
+            messageDiv.style.color = isSuccess ? '#155724' : '#721c24';
+            messageDiv.style.border = isSuccess ? '1px solid #c3e6cb' : '1px solid #f5c6cb';
+        }
+
+        document.querySelector('.form-wrapper').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    showMessage('Login successful!', true);
+                    localStorage.setItem('loggedIn', 'true');
+                    setTimeout(() => {
+                        nav.style.display = 'block';
+                        loginContainer.style.display = 'none';
+                    }, 800);
+                } else {
+                    showMessage('Login failed. Please check your credentials.', false);
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again later.', false);
+            }
+        }); 
+
+        // Logout functionality
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('loggedIn');
+                nav.style.display = 'none';
+                loginContainer.style.display = 'block';
+            });
+        }
+    </script>
 </body>
 </html>

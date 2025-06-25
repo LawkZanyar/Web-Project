@@ -3,23 +3,29 @@
 <head>
     <title>Student</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
 </head>
 <body>
     <nav>
-        <a href="index.html">Login</a>
+        <a href="index.html">Home</a>
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
         <a href="student.html">Student</a>
         <a href="manager.html">Manager</a>
     </nav>
     
-    <div class="main-container">
-        <h1>Student Dashboard</h1>
-        
-        <div class="card-container">
-            <div class="link-group">
-                <a href="new-form.html">New Application</a>
-                <a href="sent-applications.html">Sent Applications</a>
+    <div class="main-container" style="max-width:600px;margin:40px auto;padding:24px;background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <h1 style="margin-bottom:16px;">Student Dashboard</h1>
+        <div class="card-container" style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
+            <div class="dashboard-card" style="flex:1 1 180px;min-width:180px;max-width:220px;background:#f5f7fa;padding:20px;border-radius:8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+                <a href="new-form.html" style="text-decoration:none;color:#007bff;font-size:1.1em;font-weight:500;">📝 New Application</a>
+            </div>
+            <div class="dashboard-card" style="flex:1 1 180px;min-width:180px;max-width:220px;background:#f5f7fa;padding:20px;border-radius:8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+                <a href="sent-applications.html" style="text-decoration:none;color:#007bff;font-size:1.1em;font-weight:500;">📄 Sent Applications</a>
             </div>
         </div>
     </div>

@@ -3,10 +3,15 @@
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
 </head>
 <body>
     <nav>
-        <a href="index.html">Login</a>
+        <a href="index.html">Home</a>
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin</a>
         <a href="student.html">Student</a>
@@ -17,14 +22,59 @@
 
     <div class="profile-container">
         <div class="profile-pic">
-            <!-- Replace with actual image path -->
             <img src="profile_placeholder.png" alt="Profile Picture" style="height: 180px;width: 150px;">
         </div>
         <div class="profile-info">
-            <p class="profile-detail">Name: John Doe</p>
-            <p class="profile-detail">Email: john.doe@example.com</p>
-            <p class="profile-detail">Role: Student</p>
+            <p class="profile-detail" id="name-field">Name: <span id="name-value" contenteditable="true" style="outline:none;">John Doe</span></p>
+            <p class="profile-detail" id="email-field">Email: <span id="email-value" contenteditable="true" style="outline:none;">john.doe@example.com</span></p>
+            <p class="profile-detail" id="role-field">Role: <span id="role-value" contenteditable="true" style="outline:none;">Student</span></p>
+            <button id="save-btn" style="margin-top:10px;">Save</button>
+            <div id="profile-message" style="display:none; margin-top:10px; padding:8px; border-radius:4px;"></div>
         </div>
     </div>
+
+    <script>
+        const profilePic = document.querySelector('.profile-pic img');
+        const saveBtn = document.getElementById('save-btn');
+        const messageDiv = document.getElementById('profile-message');
+
+        profilePic.style.cursor = 'pointer';
+
+        profilePic.addEventListener('mouseenter', function() {
+            profilePic.style.border = '2px solid #007bff';
+        });
+        profilePic.addEventListener('mouseleave', function() {
+            profilePic.style.border = '';
+        });
+
+        profilePic.addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profilePic.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        });
+
+        // Save button functionality
+        saveBtn.addEventListener('click', function() {
+            messageDiv.textContent = 'Profile updated!';
+            messageDiv.style.display = 'block';
+            messageDiv.style.backgroundColor = '#d4edda';
+            messageDiv.style.color = '#155724';
+            messageDiv.style.border = '1px solid #c3e6cb';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
