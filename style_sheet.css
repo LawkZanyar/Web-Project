@@ -64,10 +64,11 @@ nav a:hover, nav a.active {
 }
 
 .form-container, .card-container, .profile-container, .links-container {
-    background: rgba(45, 45, 45, 0.7);
+    background: rgba(45, 45, 45, 0.55);
     border-radius: 18px;
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1.5px solid rgba(156, 39, 176, 0.18);
     padding: 2.5rem 2rem;
     margin: 2rem auto;
@@ -120,6 +121,7 @@ nav a:hover, nav a.active {
     border-radius: 8px;
     box-shadow: 0 2px 8px #9C27B0aa;
     transition: background 0.3s, box-shadow 0.3s;
+    animation: bounce 2s infinite 2s;
 }
 
 .form-group input[type="submit"]:hover {
@@ -454,6 +456,14 @@ body {
     align-items: center;
 }
 
+@keyframes bounce {
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-6px);}
+}
+.form-group input[type="submit"] {
+    animation: bounce 2s infinite 2s;
+}
+
 @media (max-width: 600px) {
     .home-logo {
         width: 90vw;
@@ -463,4 +473,35 @@ body {
         max-width: 95vw;
         padding: 1.2rem;
     }
+}
+
+.home-announcement {
+    background: linear-gradient(90deg, #2d2346 0%, #3a2e5a 100%);
+    color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(44,0,80,0.10);
+    padding: 28px 32px 22px 32px;
+    margin: 32px auto 24px auto;
+    max-width: 520px;
+    text-align: left;
+}
+.home-announcement h2 {
+    color: #c084fc;
+    margin-bottom: 14px;
+    font-size: 1.3em;
+    letter-spacing: 0.5px;
+}
+.announcement-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.announcement-list li {
+    margin-bottom: 12px;
+    padding-left: 0;
+    font-size: 1.08em;
+    line-height: 1.5;
+}
+.announcement-list li:last-child {
+    margin-bottom: 0;
 }
