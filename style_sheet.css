@@ -341,3 +341,126 @@ button:hover, .table-action-btn:hover {
     background: #7B1FA2;
     border-radius: 8px;
 }
+
+/* Home Page Specific Styles */
+.home-branding {
+    text-align: center;
+    margin-top: 36px;
+    margin-bottom: 12px;
+}
+.home-logo {
+    width: 550px;
+    height: auto;   
+    margin-bottom: 3px;
+    filter: drop-shadow(0 2px 8px rgba(44,0,80,0.12));
+    background: none; /* Ensures no background */
+}
+.home-about {
+    text-align: center;
+    color: #a5b4fc;
+    margin-bottom: 18px;
+    font-size: 1.08em;
+}
+.home-contact {
+    background: linear-gradient(90deg, #2d2346 0%, #3a2e5a 100%);
+    color: #fff;
+    padding: 24px 32px 20px 32px;
+    border-radius: 16px 16px 0 0;
+    margin: 0 auto 32px auto;
+    max-width: 370px;
+    font-size: 1.08em;
+    box-shadow: 0 -2px 18px 0 rgba(44, 0, 80, 0.18);
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: fadeInUp 0.7s 1.3s forwards;
+    opacity: 0;
+}
+.home-contact a {
+    color: #c084fc;
+    text-decoration: underline;
+    font-weight: 500;
+    word-break: break-all;
+}
+
+.contact-icon {
+    font-size: 2.2em;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.contact-title {
+    font-size: 1.18em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    color: #c084fc;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    align-items: center;
+}
+
+.contact-label {
+    font-weight: 600;
+    color: #a5b4fc;
+    margin-right: 6px;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animated {
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.logo-animate {
+    animation: fadeInUp 0.7s 0.1s forwards;
+}
+.title-animate {
+    animation: fadeInUp 0.7s 0.5s forwards;
+}
+.about-animate {
+    animation: fadeInUp 0.7s 0.9s forwards;
+}
+.contact-animate {
+    animation: fadeInUp 0.7s 1.3s forwards;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 600px) {
+    .home-logo {
+        width: 90vw;
+        max-width: 320px;
+    }
+    .form-container, .home-contact {
+        max-width: 95vw;
+        padding: 1.2rem;
+    }
+}

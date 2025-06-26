@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="style_sheet.css">
+</head>
+<body>
+    <nav id="main-nav">
+        <a href="profile.html">Profile</a>
+        <a href="admin.html">Admin</a>
+        <a href="student.html">Student</a>
+        <a href="manager.html">Manager</a>
+        <a href="#" id="logout-link" style="float:right;">Logout</a>
+    </nav>
+
+    <div class="main-content">
+        <!-- Branding / Logo -->
+        <div class="home-branding">
+            <img src="transparentlogo.png" alt="App Logo" class="home-logo animated logo-animate" />
+            <h2 class="animated title-animate">Application Portal</h2>
+        </div>
+
+        <!-- About Section -->
+        <div class="home-about animated about-animate">
+            <p>
+                Welcome to the Application Portal! This platform allows students, managers, and administrators to manage applications efficiently and securely.
+            </p>
+        </div>
+    </div>
+
+    <!-- Contact/Support Info at the bottom -->
+    <div class="home-contact animated contact-animate">
+        <div class="contact-icon">💬</div>
+        <div class="contact-title">Need Help?</div>
+        <div class="contact-details">
+            <div>
+                <span class="contact-label">Email:</span>
+                <a href="mailto:support@example.com">support@example.com</a>
+            </div>
+            <div>
+                <span class="contact-label">Phone:</span>
+                <a href="tel:+15551234567">+1 (555) 123-4567</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Redirect to login if not logged in
+        if (localStorage.getItem('loggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Logout functionality
+        const logoutLink = document.getElementById('logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('loggedIn');
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>

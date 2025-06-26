@@ -5,41 +5,38 @@
     <link rel="stylesheet" href="style_sheet.css">
 </head>
 <body>
-    <nav id="main-nav" style="display:none;">
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin</a>
-        <a href="student.html">Student</a>
-        <a href="manager.html">Manager</a>
-        <a href="#" id="logout-link" style="float:right;">Logout</a>
-    </nav>
-    
-    <div class="form-container" id="login-container">
-        <h1>Login Page</h1>
-        <form class="form-wrapper" method="post">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Login">
-            </div>
-        </form>
-        <div id="message" style="display:none; margin-top:10px; padding:8px; border-radius:4px;"></div>
+    <div class="main-content">
+        <!-- Branding / Logo -->
+        <div class="home-branding">
+            <img src="transparentlogo.png" alt="App Logo" class="home-logo animated logo-animate" />
+            <h2 class="animated title-animate">Application Portal</h2>
+        </div>
+
+        <div class="form-container" id="login-container">
+            <h1>Login Page</h1>
+            <form class="form-wrapper" method="post">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+            <div id="message" style="display:none; margin-top:10px; padding:8px; border-radius:4px;"></div>
+        </div>
     </div>
     <script>
         const messageDiv = document.getElementById('message');
-        const nav = document.getElementById('main-nav');
         const loginContainer = document.getElementById('login-container');
-        const logoutLink = document.getElementById('logout-link');
 
-        // Check login status on page load
+        // Redirect to home if already logged in
         if (localStorage.getItem('loggedIn') === 'true') {
-            nav.style.display = 'block';
-            loginContainer.style.display = 'none';
+            window.location.href = 'home.html';
         }
 
         function showMessage(text, isSuccess) {
@@ -69,8 +66,7 @@
                     showMessage('Login successful!', true);
                     localStorage.setItem('loggedIn', 'true');
                     setTimeout(() => {
-                        nav.style.display = 'block';
-                        loginContainer.style.display = 'none';
+                        window.location.href = 'home.html';
                     }, 800);
                 } else {
                     showMessage('Login failed. Please check your credentials.', false);
@@ -78,17 +74,7 @@
             } catch (error) {
                 showMessage('An error occurred. Please try again later.', false);
             }
-        }); 
-
-        // Logout functionality
-        if (logoutLink) {
-            logoutLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('loggedIn');
-                nav.style.display = 'none';
-                loginContainer.style.display = 'block';
-            });
-        }
+        });
     </script>
 </body>
 </html>
