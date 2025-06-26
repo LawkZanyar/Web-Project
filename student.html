@@ -5,8 +5,13 @@
     <link rel="stylesheet" href="style_sheet.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        /*
         body {
             background: #181622;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        */
+        body {
             font-family: 'Segoe UI', Arial, sans-serif;
         }
         nav {
@@ -44,6 +49,29 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.10);
             max-width: 500px;
             justify-content: center;
+            opacity: 0;
+            transform: scale(0.85);
+            animation: popup-in 0.7s cubic-bezier(.22,1.12,.58,1) forwards;
+        }
+        @keyframes popup-in {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes popup-out {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+        }
+        .welcome-banner.fade-out {
+            animation: popup-out 1.2s cubic-bezier(.22,1.12,.58,1) forwards;
+            pointer-events: none;
         }
         .dashboard-title {
             margin-bottom: 28px;
@@ -169,6 +197,11 @@
         if (username) {
             document.getElementById('welcome-text').children[1].textContent = `Welcome, ${username}!`;
         }
+
+        // Fade out the welcome banner after 2.5 seconds
+        setTimeout(() => {
+            document.getElementById('welcome-text').classList.add('fade-out');
+        }, 2500);
     </script>
 </body>
 </html>
