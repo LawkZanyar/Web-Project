@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="style_sheet.css">
 </head>
 <body>
+    <div id="loader-overlay">
+        <div class="loader-spinner">
+            <div class="loader-inner"></div>
+        </div>
+    </div>
     <div class="main-content">
         <!-- Branding / Logo -->
         <div class="home-branding">
@@ -36,7 +41,7 @@
 
         // Redirect to home if already logged in
         if (localStorage.getItem('loggedIn') === 'true') {
-            window.location.href = 'home.html';
+            window.location.href = 'Home.html';
         }
 
         function showMessage(text, isSuccess) {
@@ -66,7 +71,7 @@
                     showMessage('Login successful!', true);
                     localStorage.setItem('loggedIn', 'true');
                     setTimeout(() => {
-                        window.location.href = 'home.html';
+                        window.location.href = 'Home.html';
                     }, 800);
                 } else {
                     showMessage('Login failed. Please check your credentials.', false);
@@ -74,6 +79,11 @@
             } catch (error) {
                 showMessage('An error occurred. Please try again later.', false);
             }
+        });
+
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('loader-overlay');
+            loader.classList.add('hide');
         });
     </script>
 </body>

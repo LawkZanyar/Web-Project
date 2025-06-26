@@ -45,6 +45,11 @@
      </style>
 </head>
 <body>
+    <div id="loader-overlay">
+        <div class="loader-spinner">
+            <div class="loader-inner"></div>
+        </div>
+    </div>
     <nav id="main-nav">
         <a href="profile.html">Profile</a>
         <a href="admin.html">Admin Tools</a>
@@ -53,27 +58,48 @@
         <a href="#" id="logout-link" style="float:right;">Logout</a>
     </nav>
 
-    <div class="welcome-banner" id="welcome-text">
-    <span>👋</span>
-    <span>Welcome to your dashboard!</span>
+    <div class="welcome-banner large-banner" id="welcome-text">
+        <span>👋</span>
+        <div class="welcome-lines">
+            <span class="welcome-main">Welcome, <span id="welcome-username"></span></span>
+            <span class="welcome-sub">to the Students' College Accommodation Management System</span>
+        </div>
     </div>
 
     <div class="main-content">
-        <!-- Announcements & News Section -->
-        <div class="home-announcement animated about-animate">
-            <h2>📢 Announcements & News</h2>
-            <ul class="announcement-list">
-                <li>
-                    <strong>System Update:</strong> The portal will undergo maintenance on <b>July 10th</b> from 2am to 4am.
-                </li>
-                <li>
-                    <strong>New Feature:</strong> You can now track your application status in real time from your dashboard!
-                </li>
-                <li>
-                    <strong>Reminder:</strong> Application deadline for the fall semester is <b>July 31st</b>.
-                </li>
-            </ul>
-        </div>
+        <!-- Redesigned Announcements & News Section -->
+        <section class="news-section animated about-animate">
+            <h2 class="news-title">📢 Announcements & News</h2>
+            <div class="news-cards">
+                <div class="news-card">
+                    <div class="news-icon update">🔧</div>
+                    <div class="news-content">
+                        <div class="news-headline">System Update</div>
+                        <div class="news-text">
+                            The portal will undergo maintenance on <b>July 10th</b> from 2am to 4am.
+                        </div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-icon feature">✨</div>
+                    <div class="news-content">
+                        <div class="news-headline">New Feature</div>
+                        <div class="news-text">
+                            You can now track your application status in real time from your dashboard!
+                        </div>
+                    </div>
+                </div>
+                <div class="news-card">
+                    <div class="news-icon reminder">⏰</div>
+                    <div class="news-content">
+                        <div class="news-headline">Reminder</div>
+                        <div class="news-text">
+                            Application deadline for the fall semester is <b>July 31st</b>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Contact/Support Info at the bottom -->
@@ -94,7 +120,7 @@
     <script>
         // Redirect to login if not logged in
         if (localStorage.getItem('loggedIn') !== 'true') {
-            window.location.href = 'index.html';
+            window.location.href = 'Login.html';
         }
 
         // Logout functionality
@@ -103,7 +129,7 @@
             logoutLink.addEventListener('click', function(e) {
                 e.preventDefault();
                 localStorage.removeItem('loggedIn');
-                window.location.href = 'index.html';
+                window.location.href = 'Login.html';
             });
         }
     </script>
@@ -111,13 +137,17 @@
     // Personalized welcome if username is available
     const username = localStorage.getItem('profileName') || localStorage.getItem('username');
     if (username) {
-        document.getElementById('welcome-text').children[1].textContent = `Welcome, ${username}!`;
+        document.getElementById('welcome-username').textContent = username;
+    } else {
+        document.getElementById('welcome-username').textContent = "Guest";
     }
-
-    // Fade out the welcome banner after 2.5 seconds
-    setTimeout(() => {
-        document.getElementById('welcome-text').classList.add('fade-out');
-    }, 2500);
+    // No fade-out, so the banner stays visible
+</script>
+<script>
+window.addEventListener('load', function() {
+    const loader = document.getElementById('loader-overlay');
+    loader.classList.add('hide');
+});
 </script>
 </body>
 </html>
