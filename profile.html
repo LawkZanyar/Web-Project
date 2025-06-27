@@ -4,74 +4,53 @@
     <title>Profile</title>
     <link rel="stylesheet" href="style_sheet.css">
     <script>
-        if (localStorage.getItem('loggedIn') !== 'true') {
-            window.location.href = 'index.html';
-        }
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else {
+                    document.getElementById('name-value').textContent = data.name || 'User';
+                    document.getElementById('username-value').textContent = data.username || '';
+                    document.getElementById('email-value').textContent = data.email || '';
+                    // Render nav bar based on role
+                    const nav = document.getElementById('main-nav');
+                    let navHtml = '<a href="Home.html">Home</a>';
+                    if (data.role === 'admins') {
+                        navHtml += '<a href="admin.html">Admin Tools</a>';
+                    }
+                    if (data.role === 'students') {
+                        navHtml += '<a href="student.html">Student Application</a>';
+                    }
+                    if (data.role === 'managers') {
+                        navHtml += '<a href="manager.html">Manager Overview</a>';
+                    }
+                    nav.innerHTML = navHtml;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
     </script>
 </head>
 <body>
-    <nav>
-        <a href="Home.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-    </nav>
-    
+    <nav id="main-nav"></nav>
     <h1>Profile Page</h1>
-
     <div class="profile-container">
         <div class="profile-pic">
             <img src="profile_placeholder.png" alt="Profile Picture" style="height: 180px;width: 150px;">
         </div>
         <div class="profile-info">
             <p class="profile-detail" id="name-field">Name: <span id="name-value"></span></p>
+            <p class="profile-detail" id="username-field">Username: <span id="username-value"></span></p>
             <p class="profile-detail" id="email-field">Email: <span id="email-value"></span></p>
-            <p class="profile-detail" id="role-field">Role: <span id="role-value"></span></p>
             <button id="edit-btn" style="margin-top:10px;">Edit Profile</button>
         </div>
     </div>
-
     <script>
-        // Load profile data from localStorage or use defaults
-        document.getElementById('name-value').textContent = localStorage.getItem('profileName') || 'John Doe';
-        document.getElementById('email-value').textContent = localStorage.getItem('profileEmail') || 'john.doe@example.com';
-        document.getElementById('role-value').textContent = localStorage.getItem('profileRole') || 'Student';
-
-        // Edit button
         document.getElementById('edit-btn').onclick = function() {
             window.location.href = 'edit-profile.html';
         };
-
-        // Profile picture logic (optional, keep as before)
-        const profilePic = document.querySelector('.profile-pic img');
-        profilePic.style.cursor = 'pointer';
-        profilePic.addEventListener('mouseenter', function() {
-            profilePic.style.border = '2px solid #007bff';
-        });
-        profilePic.addEventListener('mouseleave', function() {
-            profilePic.style.border = '';
-        });
-        profilePic.addEventListener('click', function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        profilePic.src = e.target.result;
-                        localStorage.setItem('profilePic', e.target.result);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            };
-            input.click();
-        });
-        // Load saved profile picture if available
-        const savedPic = localStorage.getItem('profilePic');
-        if (savedPic) profilePic.src = savedPic;
     </script>
 </body>
 </html>

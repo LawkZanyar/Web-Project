@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Student</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style_sheet.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -122,19 +123,31 @@
         }
     </style>
     <script>
-        if (localStorage.getItem('loggedIn') !== 'true') {
-            window.location.href = 'index.html';
-        }
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else if (data.role !== 'students') {
+                    alert('You have the wrong role to access this page.');
+                    window.location.href = 'Home.html';
+                } else {
+                    // Render nav bar for student
+                    const nav = document.querySelector('nav');
+                    nav.innerHTML = `
+                        <a href="Home.html">Home</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="student.html" class="active">Student Application</a>
+                    `;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
     </script>
 </head>
 <body>
-    <nav>
-        <a href="Home.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html" class="active">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-    </nav>
+    <nav></nav>
     <h1 class="dashboard-title animated-dashboard">Student Dashboard</h1>
     <div class="card-container animated-dashboard">
         <div class="dashboard-card">
