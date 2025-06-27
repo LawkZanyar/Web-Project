@@ -4,51 +4,59 @@
     <title>Edit Profile</title>
     <link rel="stylesheet" href="style_sheet.css">
     <script>
-        if (localStorage.getItem('loggedIn') !== 'true') {
-            window.location.href = 'index.html';
-        }
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else {
+                    document.getElementById('edit-name').textContent = data.name || '';
+                    document.getElementById('edit-username').textContent = data.username || '';
+                    document.getElementById('edit-email').textContent = data.email || '';
+                    // Render nav bar based on role
+                    const nav = document.getElementById('main-nav');
+                    let navHtml = '<a href="Home.html">Home</a>';
+                    if (data.role === 'admins') {
+                        navHtml += '<a href="admin.html">Admin Tools</a>';
+                    }
+                    if (data.role === 'students') {
+                        navHtml += '<a href="student.html">Student Application</a>';
+                    }
+                    if (data.role === 'managers') {
+                        navHtml += '<a href="manager.html">Manager Overview</a>';
+                    }
+                    nav.innerHTML = navHtml;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
     </script>
 </head>
 <body>
-    <nav>
-        <a href="Home.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-    </nav>
-    
+    <nav id="main-nav"></nav>
     <h1>Edit Profile</h1>
-
     <div class="profile-container">
         <div class="profile-info">
             <p class="profile-detail">Name: <span id="edit-name" contenteditable="true" style="outline:none;"></span></p>
+            <p class="profile-detail">Username: <span id="edit-username" contenteditable="true" style="outline:none;"></span></p>
             <p class="profile-detail">Email: <span id="edit-email" contenteditable="true" style="outline:none;"></span></p>
-            <p class="profile-detail">Role: <span id="edit-role" contenteditable="true" style="outline:none;"></span></p>
             <button id="save-btn" style="margin-top:10px; display:none;">Save</button>
             <button id="cancel-btn" style="margin-top:10px;">Cancel</button>
         </div>
     </div>
-
     <script>
-        // Load current values
+        // Show save button only when something changes
         const nameSpan = document.getElementById('edit-name');
+        const usernameSpan = document.getElementById('edit-username');
         const emailSpan = document.getElementById('edit-email');
-        const roleSpan = document.getElementById('edit-role');
-        nameSpan.textContent = localStorage.getItem('profileName') || 'John Doe';
-        emailSpan.textContent = localStorage.getItem('profileEmail') || 'john.doe@example.com';
-        roleSpan.textContent = localStorage.getItem('profileRole') || 'Student';
-
         const saveBtn = document.getElementById('save-btn');
         let changed = false;
-
-        // Show save button only when something changes
-        [nameSpan, emailSpan, roleSpan].forEach(span => {
+        [nameSpan, usernameSpan, emailSpan].forEach(span => {
             span.addEventListener('input', () => {
                 saveBtn.style.display = 'inline-block';
                 changed = true;
             });
-            // Optional: Save on Enter
             span.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
@@ -56,18 +64,29 @@
                 }
             });
         });
-
-        // Save and redirect
         saveBtn.addEventListener('click', function() {
-            if (changed) {
-                localStorage.setItem('profileName', nameSpan.textContent);
-                localStorage.setItem('profileEmail', emailSpan.textContent);
-                localStorage.setItem('profileRole', roleSpan.textContent);
-            }
-            window.location.href = 'profile.html';
+            // AJAX save to backend
+            const payload = {
+                name: nameSpan.textContent.trim(),
+                username: usernameSpan.textContent.trim(),
+                email: emailSpan.textContent.trim()
+            };
+            fetch('update-profile.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+                credentials: 'include'
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = 'profile.html';
+                } else {
+                    alert(data.message || 'Update failed.');
+                }
+            })
+            .catch(() => alert('Update failed.'));
         });
-
-        // Cancel button
         document.getElementById('cancel-btn').onclick = function() {
             window.location.href = 'profile.html';
         };
