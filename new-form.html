@@ -3,18 +3,35 @@
 <head>
     <title>New Application</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else if (data.role !== 'students') {
+                    alert('You have the wrong role to access this page.');
+                    window.location.href = 'Home.html';
+                } else {
+                    // Render nav bar for student
+                    const nav = document.querySelector('nav');
+                    nav.innerHTML = `
+                        <a href="Home.html">Home</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="student.html">Student Application</a>
+                    `;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
+    </script>
 </head>
 <body>
-    <nav>
-        <a href="Home.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-    </nav>
+    <nav></nav>
     <div class="form-container">
         <h1>New Application Form</h1>
-        <form class="form-wrapper">
+        <form class="form-wrapper" method="post">
             <div class="form-group">
                 <label for="title">Application Title:</label>
                 <input type="text" id="title" name="title" required>
@@ -28,5 +45,6 @@
             </div>
         </form>
     </div>
+    <script src="new-form.js"></script>
 </body>
 </html>
