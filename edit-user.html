@@ -3,20 +3,37 @@
 <head>
     <title>Edit User</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else if (data.role !== 'admins') {
+                    alert('You have the wrong role to access this page.');
+                    window.location.href = 'Home.html';
+                } else {
+                    // Render nav bar for admin
+                    const nav = document.querySelector('nav');
+                    nav.innerHTML = `
+                        <a href="Home.html">Home</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="admin.html">Admin Tools</a>
+                    `;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
+    </script>
 </head>
 <body>
-    <nav>
-        <a href="Home.html">Home</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-    </nav>
+    <nav></nav>
     <div class="form-container">
         <h1>Edit User</h1>
         <form class="form-wrapper">
             <div class="form-group">
-                <label for="search-user">Search User:</label>
+                <label for="search-user">Search By Username:</label>
                 <input type="text" id="search-user" name="search-user">
             </div>
             <div class="form-group">
@@ -25,39 +42,6 @@
             <!-- Edit fields would appear here after search -->
         </form>
     </div>
-    <script>
-        // Mock user data for demonstration
-        const users = [
-            { username: "johndoe", name: "John Doe", email: "john@example.com", role: "Student" },
-            { username: "janedoe", name: "Jane Doe", email: "jane@example.com", role: "Admin" }
-        ];
-
-        const form = document.querySelector('.form-wrapper');
-        const searchInput = document.getElementById('search-user');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const value = searchInput.value.trim().toLowerCase();
-            const user = users.find(u => u.username.toLowerCase() === value || u.email.toLowerCase() === value);
-            let editFields = document.getElementById('edit-fields');
-            if (editFields) editFields.remove();
-
-            if (user) {
-                editFields = document.createElement('div');
-                editFields.id = 'edit-fields';
-                editFields.innerHTML = `
-                    <div class="form-group">
-                        <label>User found:</label>
-                        <a href="edit-user-details.html?username=${encodeURIComponent(user.username)}" style="color:#4f46e5;text-decoration:underline;cursor:pointer;">
-                            ${user.username} (${user.email})
-                        </a>
-                    </div>
-                `;
-                form.appendChild(editFields);
-            } else {
-                alert('User not found!');
-            }
-        });
-    </script>
+    <script src="edit-user.js"></script>
 </body>
 </html>
