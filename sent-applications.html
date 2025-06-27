@@ -3,31 +3,68 @@
 <head>
     <title>Sent Applications</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else if (data.role !== 'students') {
+                    alert('You have the wrong role to access this page.');
+                    window.location.href = 'Home.html';
+                } else {
+                    // Render nav bar for student
+                    const nav = document.querySelector('nav');
+                    nav.innerHTML = `
+                        <a href="Home.html">Home</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="student.html">Student Application</a>
+                    `;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
+    </script>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Login</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin</a>
-        <a href="student.html">Student</a>
-        <a href="manager.html">Manager</a>
-    </nav>
+    <nav></nav>
     <div class="main-container">
         <h1>Sent Applications</h1>
         <div class="card-container">
-            <table border="1" style="width:100%; color:#fff; background:#2d2d2d; border-radius:10px;">
+            <table id="applications-table" border="1" style="width:100%; color:#fff; background:#2d2d2d; border-radius:10px;">
                 <tr>
                     <th>Date</th>
                     <th>Title</th>
                     <th>Status</th>
                 </tr>
-                <tr>
-                    <td>2023-09-20</td>
-                    <td>Sample Application</td>
-                    <td>Pending</td>
-                </tr>
             </table>
         </div>
     </div>
+    <script>
+    fetch('get-applications.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && Array.isArray(data.applications)) {
+                const table = document.getElementById('applications-table');
+                data.applications.forEach(app => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${app.created_at}</td><td>${app.title}</td><td>${app.status.charAt(0).toUpperCase() + app.status.slice(1)}</td>`;
+                    table.appendChild(tr);
+                });
+            } else {
+                const table = document.getElementById('applications-table');
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="3">No applications found.</td>';
+                table.appendChild(tr);
+            }
+        })
+        .catch(() => {
+            const table = document.getElementById('applications-table');
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td colspan="3">Failed to load applications.</td>';
+            table.appendChild(tr);
+        });
+    </script>
 </body>
 </html>

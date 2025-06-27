@@ -3,33 +3,103 @@
 <head>
     <title>Pending Applications</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <script>
+        fetch('session-check.php')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = 'Login.html';
+                } else if (data.role !== 'managers') {
+                    alert('You have the wrong role to access this page.');
+                    window.location.href = 'Home.html';
+                } else {
+                    // Render nav bar for manager
+                    const nav = document.querySelector('nav');
+                    nav.innerHTML = `
+                        <a href="Home.html">Home</a>
+                        <a href="profile.html">Profile</a>
+                        <a href="manager.html">Manager Overview</a>
+                    `;
+                }
+            })
+            .catch(() => {
+                window.location.href = 'Login.html';
+            });
+    </script>
 </head>
 <body>
-    <nav>
-        <a href="index.html">Login</a>
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin</a>
-        <a href="student.html">Student</a>
-        <a href="manager.html">Manager</a>
-    </nav>
+    <nav></nav>
     <div class="main-container">
         <h1>Pending Applications</h1>
-        <div class="card-container">
-            <table border="1" style="width:100%; color:#fff; background:#2d2d2d; border-radius:10px;">
+        <div class="card-container" style="max-width:100%; box-sizing:border-box; overflow-x:unset; overflow-y:unset;">
+            <table id="pending-table" border="0" cellpadding="0" cellspacing="0" style="width:100%; color:#fff; background:#2d2d2d; border-radius:10px; table-layout:auto; border-collapse:separate; border-spacing:0;">
                 <tr>
-                    <th>Applicant</th>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>John Doe</td>
-                    <td>2023-09-20</td>
-                    <td>Sample Application</td>
-                    <td><button style="background:#9C27B0; color:#fff; border:none; border-radius:5px; padding:0.5rem 1rem; cursor:pointer;">Review</button></td>
+                    <th style="white-space:nowrap;">Applicant</th>
+                    <th style="white-space:nowrap;">Date</th>
+                    <th style="white-space:nowrap;">Title</th>
+                    <th>Description</th>
+                    <th style="white-space:nowrap;">Action</th>
                 </tr>
             </table>
         </div>
     </div>
+    <script>
+    function renderPending() {
+        fetch('pending-applications.php')
+            .then(response => response.json())
+            .then(data => {
+                const table = document.getElementById('pending-table');
+                // Remove old rows except header
+                table.querySelectorAll('tr:not(:first-child)').forEach(tr => tr.remove());
+                if (data.success && Array.isArray(data.applications) && data.applications.length) {
+                    data.applications.forEach(app => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${app.name}</td>
+                            <td>${app.created_at}</td>
+                            <td>${app.title}</td>
+                            <td>${app.description}</td>
+                            <td style="overflow:visible; text-align:center; vertical-align:middle;">
+                                <button style="background:#22c55e; color:#fff; border:none; border-radius:5px; padding:0.5rem 1rem; cursor:pointer; min-width:90px; box-sizing:border-box; white-space:nowrap;" onclick="approveApp(${app.id}, this)">Approve</button>
+                            </td>
+                        `;
+                        table.appendChild(tr);
+                    });
+                } else {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = '<td colspan="5">No pending applications.</td>';
+                    table.appendChild(tr);
+                }
+            })
+            .catch(() => {
+                const table = document.getElementById('pending-table');
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="5">Failed to load applications.</td>';
+                table.appendChild(tr);
+            });
+    }
+    function approveApp(id, btn) {
+        btn.disabled = true;
+        fetch('pending-applications.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                renderPending();
+            } else {
+                alert(data.message || 'Failed to approve.');
+                btn.disabled = false;
+            }
+        })
+        .catch(() => {
+            alert('Network error.');
+            btn.disabled = false;
+        });
+    }
+    renderPending();
+    </script>
 </body>
 </html>
