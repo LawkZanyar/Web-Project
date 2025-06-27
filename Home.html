@@ -3,6 +3,7 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="style_sheet.css">
+    <meta charset="UTF-8">
 
     <style>
         .welcome-banner {
@@ -45,18 +46,7 @@
      </style>
 </head>
 <body>
-    <div id="loader-overlay">
-        <div class="loader-spinner">
-            <div class="loader-inner"></div>
-        </div>
-    </div>
-    <nav id="main-nav">
-        <a href="profile.html">Profile</a>
-        <a href="admin.html">Admin Tools</a>
-        <a href="student.html">Student Application</a>
-        <a href="manager.html">Manager Overview</a>
-        <a href="#" id="logout-link" style="float:right;">Logout</a>
-    </nav>
+    <nav id="main-nav"></nav>
 
     <div class="welcome-banner large-banner" id="welcome-text">
         <span>👋</span>
@@ -118,36 +108,55 @@
         </div>
     </div>
     <script>
-        // Redirect to login if not logged in
-        if (localStorage.getItem('loggedIn') !== 'true') {
-            window.location.href = 'Login.html';
-        }
-
-        // Logout functionality
-        const logoutLink = document.getElementById('logout-link');
-        if (logoutLink) {
-            logoutLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('loggedIn');
+        // Session-based login check (with credentials)
+        function redirectToLogin() {
+            if (!window.location.pathname.endsWith('Login.html')) {
                 window.location.href = 'Login.html';
-            });
+            }
         }
+        fetch('session-check.php', { credentials: 'include' })
+            .then(response => {
+                if (!response.ok) throw new Error('Network error');
+                return response.json();
+            })
+            .then(data => {
+                if (!data.loggedIn) {
+                    redirectToLogin();
+                } else {
+                    document.getElementById('welcome-username').textContent = data.name || data.username || 'User';
+                    // Render nav bar based on role
+                    const nav = document.getElementById('main-nav');
+                    let navHtml = '<a href="profile.html">Profile</a>';
+                    if (data.role === 'admins') {
+                        navHtml += '<a href="admin.html">Admin Tools</a>';
+                    }
+                    if (data.role === 'students') {
+                        navHtml += '<a href="student.html">Student Application</a>';
+                    }
+                    if (data.role === 'managers') {
+                        navHtml += '<a href="manager.html">Manager Overview</a>';
+                    }
+                    navHtml += '<a href="#" id="logout-link" style="float:right;">Logout</a>';
+                    nav.innerHTML = navHtml;
+                    // Attach logout event
+                    const logoutLink = document.getElementById('logout-link');
+                    if (logoutLink) {
+                        logoutLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            fetch('logout.php', { method: 'POST', credentials: 'include' })
+                                .then(() => {
+                                    window.location.href = 'Login.html';
+                                });
+                        });
+                    }
+                }
+            })
+            .catch(() => {
+                redirectToLogin();
+            });
     </script>
     <script>
-    // Personalized welcome if username is available
-    const username = localStorage.getItem('profileName') || localStorage.getItem('username');
-    if (username) {
-        document.getElementById('welcome-username').textContent = username;
-    } else {
-        document.getElementById('welcome-username').textContent = "Guest";
-    }
     // No fade-out, so the banner stays visible
-</script>
-<script>
-window.addEventListener('load', function() {
-    const loader = document.getElementById('loader-overlay');
-    loader.classList.add('hide');
-});
-</script>
+    </script>
 </body>
 </html>
