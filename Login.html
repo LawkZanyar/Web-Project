@@ -5,11 +5,6 @@
     <link rel="stylesheet" href="style_sheet.css">
 </head>
 <body>
-    <div id="loader-overlay">
-        <div class="loader-spinner">
-            <div class="loader-inner"></div>
-        </div>
-    </div>
     <div class="main-content">
         <!-- Branding / Logo -->
         <div class="home-branding">
@@ -35,56 +30,6 @@
             <div id="message" style="display:none; margin-top:10px; padding:8px; border-radius:4px;"></div>
         </div>
     </div>
-    <script>
-        const messageDiv = document.getElementById('message');
-        const loginContainer = document.getElementById('login-container');
-
-        // Redirect to home if already logged in
-        if (localStorage.getItem('loggedIn') === 'true') {
-            window.location.href = 'Home.html';
-        }
-
-        function showMessage(text, isSuccess) {
-            messageDiv.textContent = text;
-            messageDiv.style.display = 'block';
-            messageDiv.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
-            messageDiv.style.color = isSuccess ? '#155724' : '#721c24';
-            messageDiv.style.border = isSuccess ? '1px solid #c3e6cb' : '1px solid #f5c6cb';
-        }
-
-        document.querySelector('.form-wrapper').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-
-                if (response.ok) {
-                    showMessage('Login successful!', true);
-                    localStorage.setItem('loggedIn', 'true');
-                    setTimeout(() => {
-                        window.location.href = 'Home.html';
-                    }, 800);
-                } else {
-                    showMessage('Login failed. Please check your credentials.', false);
-                }
-            } catch (error) {
-                showMessage('An error occurred. Please try again later.', false);
-            }
-        });
-
-        window.addEventListener('load', function() {
-            const loader = document.getElementById('loader-overlay');
-            loader.classList.add('hide');
-        });
-    </script>
+    <script src="login.js"></script>
 </body>
 </html>
